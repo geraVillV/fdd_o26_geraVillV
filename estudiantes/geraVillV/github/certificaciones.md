@@ -16,19 +16,12 @@ Fecha en que lo terminaste:10 de Septiembre, 2026.
 
 ## Intermediate Git
 
-Se llena en la **segunda** entrega.
 
-Fecha en que lo terminaste:
+Fecha en que lo terminaste:16 de Septiembre, 2026.
 
 ![Captura del curso Intermediate Git terminado](./git-intermedio.png)
 
 ## Una cosa que aprendiste y no sabías
 
-Se llena en la **segunda** entrega, cuando ya hiciste los dos cursos.
-
-Dos o tres líneas. Algo concreto que salió en alguno de los dos cursos y que
-no habías visto en clase, o que en clase entendiste a medias y ahí se te
-acomodó. Si sientes que no aprendiste nada nuevo, dilo y explica qué parte de
-los cursos te pareció repetida.
-
+Creo que haciendo el curso intemedio de git me queda más claro porque se sigue el flujo que se sigue. Ademas, ya entiendo mejor los comandos que tengo que hacer en github. Por ultimo en clase no me habia quedado muy claro lo de los conflictos que pueden existir en git con los pulls y al trabjar en main y asi, y ya con el curso entiendo mejor las razones de los conflictos.
 
