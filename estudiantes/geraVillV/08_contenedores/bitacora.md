@@ -87,8 +87,9 @@ Uno por línea: qué estaba mal, qué consecuencia tiene, y qué cambiaste.
 
 1. `FROM python:latest` usaba una imagen base sin versión fija y con más paquetes de los necesarios, lo que infla el tamaño final y hace el build no reproducible entre corridas. Cambié a `python:3.12-slim`, y el tamaño final quedó en 206MB (disk usage) / 51.7MB (content size), bajo el límite de 300MB.
 2. `COPY . .` estaba antes de `RUN pip install -r requirements.txt`, así que cualquier cambio en el código invalidaba el cache de la capa de instalación de dependencias, obligando a reinstalarlas en cada build. Reordené a `COPY requirements.txt .` + `RUN pip install` primero, y `COPY . .` al final. Se confirma en `docker history`: la capa de `pip install` (13.8MB) quedó separada de la capa de `COPY . .` (12.3kB), así que un cambio en el código solo invalida esa última capa pequeña.
-3. No había `.dockerignore`, así que `COPY . .` metía archivos innecesarios al contexto de build (como `__pycache__`). Agregué `.dockerignore` con `__pycache__/`, `*.pyc`, `.git`, `.env`.
+3. 3. El Dockerfile no declaraba con qué usuario correr el proceso, así que el contenedor seguía ejecutándose como `root` por defecto. Esto importa porque cualquier archivo que el proceso escriba en una carpeta montada desde la máquina host queda a nombre de root, y luego no se puede borrar sin privilegios elevados. Agregué `RUN useradd --create-home appuser` después de instalar las dependencias, y `USER appuser` antes del `CMD`, para que el proceso corra con un usuario sin privilegios. Confirmado: la salida de `docker run` ahora dice "Corriendo como: appuser" en vez de root, y en `docker history` aparece la capa `USER appuser` como último paso antes del `CMD`.
 
 ## Una cosa que se me rompió
 
-La verdad no se me rimpio nada, pero la parte que mas me costo entender fue el orden del COPY
+La verdad no se me rimpio nada, pero la parte que mas me costo entender fue el orden del COPY. 
+A la hora de subirlo al git me detecto un error ya que no habia cambiado del root a un user para que pudiera correr sin privilegios. Pero ya en esta nueva version ya lo modifique.

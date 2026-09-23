@@ -23,7 +23,7 @@ URL: https://hub.docker.com/r/geraplayer/roto-fix
 ## El digest
 
 ```text
-geraplayer/roto-fix@sha256:8142c1231a982d73a382777af854eb4f941022e58a72d0b815b9b306b9ac7011
+geraplayer/roto-fix@sha256:a067676c0ba0af0f01454256a898c7eb78216d0645fff0adde140ff3cdaa350f
 
 ```
 
@@ -38,7 +38,7 @@ docker run --rm geraplayer/roto-fix:latest
 Salida que debo esperar:
 
 ```text
-Corriendo como: root
+Corriendo como: appuser
 requests 2.32.3
 ```
 
@@ -56,9 +56,9 @@ Removing login credentials for https://index.docker.io/v1/
 Untagged: geraplayer/roto-fix:latest
 Unable to find image 'geraplayer/roto-fix:latest' locally
 latest: Pulling from geraplayer/roto-fix
-Digest: sha256:8142c1231a982d73a382777af854eb4f941022e58a72d0b815b9b306b9ac7011
+Digest: sha256:a067676c0ba0af0f01454256a898c7eb78216d0645fff0adde140ff3cdaa350f
 Status: Downloaded newer image for geraplayer/roto-fix:latest
-Corriendo como: root
+Corriendo como: appuser
 requests 2.32.3
 
 ```
