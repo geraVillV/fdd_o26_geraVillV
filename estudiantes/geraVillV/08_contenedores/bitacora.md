@@ -48,7 +48,7 @@ docker images
 IMAGE                        ID             DISK USAGE   CONTENT SIZE   EXTRA
 alpine:3.20                  d9e853e87e55       13.2MB         3.71MB        
 cassandra:5.0                da9dad3aaf67        550MB          174MB    U   
-geraplayer/roto-fix:latest   8142c1231a98        206MB         51.7MB        
+geraplayer/roto-fix:latest   a067676c0ba0        206MB         51.7MB        
 hello-world:latest           5e2309035332       21.8kB         9.49kB    U   
 info-test:latest             a8bf6fd16efa        115MB         29.8MB        
 mongo:7.0                    9854f7139445       1.18GB          299MB    U   
@@ -56,29 +56,19 @@ neo4j:ubi9                   93a9e81f4da7       1.04GB          374MB    U
 postgres:16                  f1c3376c26f2        639MB          166MB        
 postgres:17                  67f41722b7a8        643MB          167MB        
 python:3.12-slim             78387bc3881b        189MB         48.4MB        
-roto-fix:latest              8142c1231a98        206MB         51.7MB        
+roto-fix:latest              a067676c0ba0        206MB         51.7MB        
 ubuntu:24.04                 b3cc40b72b93        117MB         31.7MB 
 
 
-docker history <tu-usuario>/<tu-imagen>
-IMAGE          CREATED          CREATED BY                                      SIZE      COMMENT
-8142c1231a98   54 minutes ago   CMD ["python" "app.py"]                         0B        buildkit.dockerfile.v0
-<missing>      54 minutes ago   COPY . . # buildkit                             12.3kB    buildkit.dockerfile.v0
-<missing>      54 minutes ago   RUN /bin/sh -c pip install -r requirements.t…   13.8MB    buildkit.dockerfile.v0
-<missing>      54 minutes ago   COPY requirements.txt . # buildkit              4.1kB     buildkit.dockerfile.v0
-<missing>      54 minutes ago   WORKDIR /app                                    0B        buildkit.dockerfile.v0
-<missing>      3 weeks ago      CMD ["python3"]                                 0B        buildkit.dockerfile.v0
-<missing>      3 weeks ago      RUN /bin/sh -c set -eux;  for src in idle3 p…   20.5kB    buildkit.dockerfile.v0
-<missing>      3 weeks ago      RUN /bin/sh -c set -eux;   savedAptMark="$(a…   40.4MB    buildkit.dockerfile.v0
-<missing>      3 weeks ago      ENV PYTHON_SHA256=5c8462af5790baf43a321a1559…   0B        buildkit.dockerfile.v0
-<missing>      3 weeks ago      ENV PYTHON_VERSION=3.12.14                      0B        buildkit.dockerfile.v0
-<missing>      3 weeks ago      ENV GPG_KEY=7169605F62C751356D054A26A821E680…   0B        buildkit.dockerfile.v0
-<missing>      3 weeks ago      RUN /bin/sh -c set -eux;  apt-get update;  a…   13.8MB    buildkit.dockerfile.v0
-<missing>      3 weeks ago      ENV LANG=C.UTF-8                                0B        buildkit.dockerfile.v0
-<missing>      3 weeks ago      ENV PATH=/usr/local/bin:/usr/local/sbin:/usr…   0B        buildkit.dockerfile.v0
-<missing>      4 weeks ago      # debian.sh --arch 'amd64' out/ 'trixie' '@1…   86.4MB    debuerreotype 0.17
-
-
+docker history geraplayer/roto-fix:latest
+IMAGE          CREATED        CREATED BY                                      SIZE      COMMENT
+a067676c0ba0   5 hours ago    CMD ["python" "app.py"]                         0B        buildkit.dockerfile.v0
+<missing>      5 hours ago    USER appuser                                    0B        buildkit.dockerfile.v0
+<missing>      5 hours ago    RUN /bin/sh -c useradd --create-home appuser…   53.2kB    buildkit.dockerfile.v0
+<missing>      5 hours ago    COPY . . # buildkit                             16.4kB    buildkit.dockerfile.v0
+<missing>      27 hours ago   RUN /bin/sh -c pip install -r requirements.t…   13.8MB    buildkit.dockerfile.v0
+<missing>      27 hours ago   COPY requirements.txt . # buildkit              4.1kB     buildkit.dockerfile.v0
+<missing>      27 hours ago   WORKDIR /app                                    0B        buildkit.dockerfile.v0
 ```
 
 ## Los tres defectos de `roto/Dockerfile`
@@ -86,8 +76,8 @@ IMAGE          CREATED          CREATED BY                                      
 Uno por línea: qué estaba mal, qué consecuencia tiene, y qué cambiaste.
 
 1. `FROM python:latest` usaba una imagen base sin versión fija y con más paquetes de los necesarios, lo que infla el tamaño final y hace el build no reproducible entre corridas. Cambié a `python:3.12-slim`, y el tamaño final quedó en 206MB (disk usage) / 51.7MB (content size), bajo el límite de 300MB.
-2. `COPY . .` estaba antes de `RUN pip install -r requirements.txt`, así que cualquier cambio en el código invalidaba el cache de la capa de instalación de dependencias, obligando a reinstalarlas en cada build. Reordené a `COPY requirements.txt .` + `RUN pip install` primero, y `COPY . .` al final. Se confirma en `docker history`: la capa de `pip install` (13.8MB) quedó separada de la capa de `COPY . .` (12.3kB), así que un cambio en el código solo invalida esa última capa pequeña.
-3. 3. El Dockerfile no declaraba con qué usuario correr el proceso, así que el contenedor seguía ejecutándose como `root` por defecto. Esto importa porque cualquier archivo que el proceso escriba en una carpeta montada desde la máquina host queda a nombre de root, y luego no se puede borrar sin privilegios elevados. Agregué `RUN useradd --create-home appuser` después de instalar las dependencias, y `USER appuser` antes del `CMD`, para que el proceso corra con un usuario sin privilegios. Confirmado: la salida de `docker run` ahora dice "Corriendo como: appuser" en vez de root, y en `docker history` aparece la capa `USER appuser` como último paso antes del `CMD`.
+2. `COPY . .` estaba antes de `RUN pip install -r requirements.txt`, así que cualquier cambio en el código invalidaba el cache de la capa de instalación de dependencias, obligando a reinstalarlas en cada build. Reordené a `COPY requirements.txt .` + `RUN pip install` primero, y `COPY . .` al final. Se confirma en `docker history`: la capa de `pip install` (13.8MB) quedó separada de la capa de `COPY . .` (16.4kB), así que un cambio en el código solo invalida esa última capa pequeña.
+3. El Dockerfile no declaraba con qué usuario correr el proceso, así que el contenedor seguía ejecutándose como `root` por defecto. Esto importa porque cualquier archivo que el proceso escriba en una carpeta montada desde la máquina host queda a nombre de root, y luego no se puede borrar sin privilegios elevados. Agregué `RUN useradd --create-home appuser` después de instalar las dependencias, y `USER appuser` antes del `CMD`, para que el proceso corra con un usuario sin privilegios. Confirmado: la salida de `docker run` ahora dice "Corriendo como: appuser" en vez de root, y en `docker history` aparece la capa `USER appuser` como último paso antes del `CMD`.
 
 ## Una cosa que se me rompió
 
