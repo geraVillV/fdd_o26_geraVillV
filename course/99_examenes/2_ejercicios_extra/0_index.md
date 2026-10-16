@@ -2,7 +2,7 @@
 id: ejercicios-extra
 title: "Ejercicios extra"
 nav_title: "Ejercicios extra"
-summary: "Ejercicios nuevos con la forma de cada parcial, más uno que combina Git, bash y Docker. Cada pregunta trae una pista y su respuesta explicada, plegadas."
+summary: "Ejercicios nuevos con la forma de cada parcial, uno que combina Git, bash y Docker, y dos colaborativos. Cada pregunta trae una pista y su respuesta explicada, plegadas; cada página, un PDF para imprimir."
 status: ready
 estimated_time: 2m
 tags: [ejercicios, practica]
@@ -26,4 +26,4 @@ Debajo de cada pregunta hay dos cosas plegadas:
 | [[ejercicio-combinado|Combinado: Git, bash y Docker]] | 2, 3 y 4 | Ramas con y sin conflicto, un script que cambia según lo mezclado, y builds que dependen de tu disco |
 | [[ejercicios-colaborativos|Colaborativos: GitHub y Docker en equipo]] | 3 y 4 | Dos ejercicios largos con tres personas a la vez: pushes rechazados, conflictos, un merge limpio que rompe una base Postgres, y qué práctica lo habría evitado |
 
-GitHub, Docker y el combinado tienen además un PDF sin respuestas para imprimir: [GitHub](../_assets/practica-github.pdf) · [Docker](../_assets/practica-docker.pdf) · [combinado](../_assets/practica-combinada.pdf).
+Cada página tiene además un PDF sin pistas ni respuestas, para resolverlo como examen: [arquitectura](../_assets/practica-arquitectura.pdf) · [terminal y regex](../_assets/practica-terminal.pdf) · [GitHub](../_assets/practica-github.pdf) · [Docker](../_assets/practica-docker.pdf) · [combinado](../_assets/practica-combinada.pdf) · [colaborativos](../_assets/practica-colaborativos.pdf).
