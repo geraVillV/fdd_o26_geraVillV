@@ -2,33 +2,33 @@
 
 ## Qué cambié, por qué y qué patrón
 
-Al menos tres filas. El patrón es uno de los ocho de la página «Patrones y
-el stack escrito».
-
 | Qué cambié | Por qué | Qué patrón |
 |---|---|---|
-| | | |
-| | | |
-| | | |
+| Reemplacé el cálculo fila por fila de pandas por expresiones de Polars sobre columnas. | Evita ejecutar una función de Python por cada fila y deja el trabajo tabular al motor de Polars. | Fuera del intérprete es rápido |
+| Uso la clase `Venta` de Pydantic v2 para validar cada fila cuando entra desde el CSV, y después Polars realiza la agregación. | Una venta individual se valida como registro, mientras que el cálculo de totales corresponde a una operación sobre una tabla. | Fila vs columna |
+| Los datos se validan una sola vez al entrar al programa con `Venta.model_validate` y no se vuelven a validar durante la agregación. | Una vez que Pydantic comprobó los datos en la frontera, repetir la validación durante el procesamiento añadiría trabajo innecesario. | Más garantías, más costo |
 
 ## Salida de pytest
 
-Pega la salida completa de `pytest -v --no-header test_practica.py`,
-corrido en `stack/`. `--no-header` quita las líneas con la ruta de tu máquina.
-
 ```text
+============================================================================= test session starts ==============================================================================
+collected 3 items
+
+test_practica.py::test_fila_buena_se_convierte PASSED                                                                                                                    [ 33%]
+test_practica.py::test_fila_sucia_cantidad_invalida PASSED                                                                                                               [ 66%]
+test_practica.py::test_cantidad_cero_se_rechaza PASSED                                                                                                                   [100%]
+
+============================================================================== 3 passed in 0.10s ===============================================================================
 ```
 
 ## Salida de ruff
 
-Pega la salida de `ruff check practica.py test_practica.py`.
-
 ```text
+All checks passed!
 ```
 
 ## Salida de mypy
 
-Pega la salida de `mypy practica.py`.
-
 ```text
+Success: no issues found in 1 source file
 ```

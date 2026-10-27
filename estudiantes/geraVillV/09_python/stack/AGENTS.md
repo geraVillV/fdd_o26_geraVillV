@@ -6,15 +6,26 @@ instrucción.
 
 ## El stack
 
-Qué librería usa este proyecto para cada cosa (forma de un dato, tablas,
-archivos, pruebas, revisión), con su versión mayor, y qué no debe usar.
+- Para la forma y validación de un dato individual: Pydantic 2.
+- Para tablas y agregaciones: Polars 2.
+- Para archivos y rutas: `pathlib` de Python.
+- Para pruebas: pytest.
+- Para revisión de estilo y errores comunes: Ruff.
+- Para revisión de tipos: mypy.
+- No usar sintaxis de Pydantic 1 ni procesamiento fila por fila con pandas cuando la operación puede expresarse directamente con Polars.
 
 ## Definición de terminado
 
-Qué comandos deben salir en verde, y sobre qué archivos, antes de dar un
-cambio por terminado.
+Antes de considerar terminado un cambio en la práctica, estos comandos deben salir en verde:
+
+```text
+pytest -v --no-header test_practica.py
+ruff check practica.py test_practica.py
+mypy practica.py
+```
+
+`pytest` debe mostrar al menos tres casos pasados y ninguna prueba fallida, con error o saltada. Ruff debe terminar con `All checks passed!` y mypy con `Success: no issues found in 1 source file`.
 
 ## Una regla mía
 
-Una regla tuya, que salga de algo que viste en la clase o en la práctica, y
-por qué.
+Validar los datos una sola vez cuando entran al programa y trabajar después con datos que ya tienen una forma conocida. Así se detectan los errores cerca de su origen y se evita repetir validaciones innecesarias durante las operaciones con Polars.

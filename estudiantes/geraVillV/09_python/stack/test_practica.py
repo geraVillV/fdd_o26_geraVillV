@@ -5,13 +5,10 @@ Mientras practica.py no defina Venta, pytest salta este archivo y lo dice.
 """
 
 import pytest
+from pydantic import ValidationError
 
-try:
-    from practica import Venta
-except ImportError:
-    pytest.skip("practica.py todavía no define Venta", allow_module_level=True)
+from practica import Venta
 
-# Una fila buena de ventas.csv, tal como llega del CSV: todo es texto.
 BUENA = {
     "fecha": "2025-01-03",
     "tienda": "Centro",
@@ -25,3 +22,29 @@ def test_fila_buena_se_convierte() -> None:
     venta = Venta.model_validate(BUENA)
     assert venta.cantidad == 3
     assert venta.precio == 120.5
+
+
+def test_fila_sucia_cantidad_invalida() -> None:
+    fila = {
+        "fecha": "2025-01-03",
+        "tienda": "Centro",
+        "producto": "P001",
+        "cantidad": "abc",
+        "precio": "120.50",
+    }
+
+    with pytest.raises(ValidationError):
+        Venta.model_validate(fila)
+
+
+def test_cantidad_cero_se_rechaza() -> None:
+    fila = {
+        "fecha": "2025-01-03",
+        "tienda": "Centro",
+        "producto": "P001",
+        "cantidad": "0",
+        "precio": "120.50",
+    }
+
+    with pytest.raises(ValidationError):
+        Venta.model_validate(fila)
