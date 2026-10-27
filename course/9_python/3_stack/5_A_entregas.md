@@ -19,7 +19,7 @@ Una entrega, por pull request. Esta página es la versión en tabla de lo que di
 
 | # | Entrega | Vence | Vale | Branch | Carpeta |
 |---:|---|---|---:|---|---|
-| 1 | DataCamp *Software Engineering Principles in Python* (capítulos 3 y 4), la práctica y tu `AGENTS.md` | 2026-10-15 | 20 | `tarea-09-stack` | `09_python/stack/` |
+| 1 | DataCamp *Software Engineering Principles in Python* (capítulos 3 y 4), la práctica y tu `AGENTS.md` | 2026-10-27 | 20 | `tarea-09-stack` | `09_python/stack/` |
 
 :::
 
@@ -33,7 +33,7 @@ Los comandos son para la terminal de **Linux, WSL2 o macOS**. `{tu_fork_de_la_cl
 
 | | |
 |---|---|
-| **Vence** | 2026-10-15 |
+| **Vence** | 2026-10-27 |
 | **Vale** | 20 puntos |
 | **Branch** | `tarea-09-stack` |
 | **Carpeta** | `estudiantes/<tu-login>/09_python/stack/` |
@@ -57,6 +57,18 @@ Los comandos son para la terminal de **Linux, WSL2 o macOS**. `{tu_fork_de_la_cl
 - `test_practica.py`: **al menos tres casos de prueba**: una fila buena (ya viene escrita: copia su forma), una fila sucia y un caso borde que elijas tú. Tres funciones o una con `@pytest.mark.parametrize` y tres casos valen igual: pytest cuenta cada caso, y la salida dice `3 passed`.
 - `decisiones.md`: la tabla «qué cambié · por qué · qué patrón» con **al menos tres filas**, y la salida pegada de los tres comandos de abajo.
 - `AGENTS.md`: el stack, la definición de terminado y una regla tuya.
+
+**La práctica, paso a paso.** `practica.py` no se escribe desde cero: `ventas_ia.py` ya hace la pregunta completa con la sintaxis de antes, y tu trabajo es cambiar cada pieza por la del stack de la clase. Abre los dos archivos lado a lado.
+
+| Paso | Qué cambias en `ventas_ia.py` | Dónde lo viste |
+|---:|---|---|
+| 1 | El contrato `Venta`: hoy usa `class Config` y `@validator` (Pydantic v1). Tu clase va en `practica.py`, con la sintaxis de v2 | A.4–A.7 |
+| 2 | La frontera: hoy `Venta(**fila).dict()` por cada fila. Qué fila entra y cuál se descarta lo decide el contrato | A.5, A.9 |
+| 3 | La suma: hoy `.apply` fila por fila con pandas. Polars la hace como una expresión sobre la columna | B.1, B.2 |
+| 4 | El orden y la comparación: corre `python ventas_ia.py`, corre tu archivo y compara los totales por tienda | B.2 |
+| 5 | Las pruebas: copia la forma de `test_fila_buena_se_convierte` para la fila sucia (un precio `"abc"` está en `ventas.csv`) y para un caso borde que se te ocurra a ti | A.11 |
+
+Cada cambio de los pasos 1 a 3 es una fila de `decisiones.md`: qué cambiaste, por qué, y cuál de los ocho patrones de [[patrones-del-stack]] lo explica. Tu `AGENTS.md` sale de lo mismo: las librerías que acabas de usar, los tres comandos de abajo y una regla que aprendiste haciendo esto.
 
 Los tres comandos de `decisiones.md`, en la terminal de `stack/`:
 
@@ -118,6 +130,8 @@ Si la revisión sale roja, corrige y haz push a la **misma** branch: no vuelvas 
 
 ## Orden sugerido
 
+El plazo original era el 2026-10-15; se movió al **2026-10-27**, sin penalización antes de esa fecha. La tabla de abajo es el orden original: úsala como guía de qué va antes de qué.
+
 | Día | Qué |
 |---|---|
 | Jue 2026-10-08 | La clase: ritual, notebooks, [[patrones-del-stack]] |
@@ -126,7 +140,7 @@ Si la revisión sale roja, corrige y haz push a la **misma** branch: no vuelvas 
 | Lun 12 | `practica.py` hasta que dé los mismos totales que `ventas_ia.py` |
 | Mar 13 | **Vence `tarea-09-por-dentro`**: termina ésa primero |
 | Mié 14 | `test_practica.py`, los tres comandos, `decisiones.md` y `AGENTS.md` |
-| Jue 2026-10-15 | Notebooks limpios, ritual de entrega, pull request en verde |
+| Mar 2026-10-27 | **Nuevo plazo.** Notebooks limpios, ritual de entrega, pull request en verde |
 
 ## Qué debes poder explicar sin ayuda
 

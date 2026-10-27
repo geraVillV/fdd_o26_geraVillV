@@ -125,7 +125,7 @@ content:
       url: "https://rayalucaria.org/fdd_o26/git-y-github/github/el-flujo-del-curso/"
       note: "La regla del mirror y qué revisa, y qué no revisa, el check verde."
   available: "2026-10-08"
-  due: "2026-10-15"
+  due: "2026-10-27"
   points: 20
   status: published
   tags: [python, datacamp, ia, pydantic, polars, pruebas, entrega]

@@ -35,7 +35,7 @@ TOPE = {
     "2_tablas.md": 215,      # 197
     "3_archivos.md": 170,    # 154
     "4_patrones.md": 115,    # 105
-    "5_A_entregas.md": 180,  # 163
+    "5_A_entregas.md": 200,  # 163; 2026-10-20 +la práctica paso a paso
     "6_B_chuleta.md": 150,   # 134
 }
 

@@ -136,6 +136,14 @@ events:
     title: "Elegir el stack: contratos, motores de tablas y formatos"
     page: elegir-el-stack
 
+  - id: session-16
+    kind: session
+    date: "2026-10-20"
+    start_time: "19:00"
+    end_time: "20:30"
+    title: "APIs y HTTP: el contrato, el mensaje, los métodos y REST"
+    page: apis-y-http
+
   - id: asueto-noviembre
     kind: cancellation
     date: "2026-11-03"
